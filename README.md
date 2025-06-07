@@ -49,26 +49,22 @@ php -S localhost:port
 _have `PHP` and `PDO` with SQLite support installed_
 
 ```sh
-git clone https://github.com/actuallyaridan/chirp
-mv chirp /var/www/
-# Or other place your Apache or XAMPP install uses for hosting coontent
+git clone https://github.com/actuallyaridan/chirp␊
+mv chirp /var/www/␊
+# Or other place your Apache or XAMPP install uses for hosting content
 ```
 
 **BTW that folder should be empty - if it's something like `/htdocs/chirp` it will 99% break**
 
 #### Database
 
-This project is currently using SQLite. Chrips database is not included in GitHub, as it contains sensntive information that will not be shared publicly. There are however refereces in the PHP files, so you can create an empty replica if you'd like to.
+This project is currently using SQLite. Chirp's database is not included in GitHub, as it contains sensitive information that will not be shared publicly. There are however references in the PHP files, so you can create an empty replica if you'd like to.
 
 ## Forking Chirp
 
-You can freely made copies of Chirp and use Chirps code as a base for your procject. However, in order to be cool, please follow these guidelines:
-
-• Rebrand your project: Please refrain from uisng any Chirp branding in your project
-
-• Credit us: You should provide credit to the people who have contibuted to this project, or link this repo
+You can freely make copies of Chirp and use Chirp's code as a base for your project. However, in order to be cool, please follow these guidelines:
+- Rebrand your project: Please refrain from using any Chirp branding in your project
+- Credit us: You should provide credit to the people who have contributed to this project, or link this repo
 
 Other than that, Chirp uses the MIT license.
-
-
 
