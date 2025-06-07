@@ -14,8 +14,8 @@ A social media project meant to mimic the feel of Twitter but be better
 - [x] Account editing
 
 ### What isn't working
-- [ ] Reposts
-- [ ] Viewing likes and reposts on accounts
+- [x] Reposts
+- [x] Viewing likes and reposts on accounts
 
 ### What's planned
 - [ ] Post editing
