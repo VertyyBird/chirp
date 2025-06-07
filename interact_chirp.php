@@ -55,7 +55,8 @@ try {
         $stmt = $db->prepare("INSERT INTO $table (chirp_id, user_id, timestamp) VALUES (:chirpId, :userId, :timestamp)");
         $stmt->bindParam(':chirpId', $chirpId, PDO::PARAM_INT);
         $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
-        $stmt->bindParam(':timestamp', time(), PDO::PARAM_INT);
+        $timestamp = time();
+        $stmt->bindValue(':timestamp', $timestamp, PDO::PARAM_INT);
         $stmt->execute();
         $status = true;
     }
