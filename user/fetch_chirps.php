@@ -86,23 +86,43 @@ try {
         exit;
     }
 
-    // Fetch posts from the specified user with counts for likes, rechirps, replies, and interactions with current user
+    // Fetch posts and rechirps by the specified user. Use the current logged in
+    // user (if any) when checking interaction status.
     $query = '
-        SELECT chirps.*, users.username, users.name, users.profilePic, users.isVerified,
-               (SELECT COUNT(*) FROM likes WHERE chirp_id = chirps.id) AS like_count,
-               (SELECT COUNT(*) FROM rechirps WHERE chirp_id = chirps.id) AS rechirp_count,
-               (SELECT COUNT(*) FROM chirps AS replies WHERE replies.parent = chirps.id AND replies.type = "reply") AS reply_count,
-               (SELECT COUNT(*) FROM likes WHERE chirp_id = chirps.id AND user_id = :user_id) AS liked_by_current_user,
-               (SELECT COUNT(*) FROM rechirps WHERE chirp_id = chirps.id AND user_id = :user_id) AS rechirped_by_current_user
-        FROM chirps
-        INNER JOIN users ON chirps.user = users.id
-        WHERE chirps.type = "post" AND chirps.user = :user_id
-        ORDER BY chirps.timestamp DESC
+        SELECT * FROM (
+            SELECT chirps.*, users.username, users.name, users.profilePic, users.isVerified,
+                   (SELECT COUNT(*) FROM likes WHERE chirp_id = chirps.id) AS like_count,
+                   (SELECT COUNT(*) FROM rechirps WHERE chirp_id = chirps.id) AS rechirp_count,
+                   (SELECT COUNT(*) FROM chirps AS replies WHERE replies.parent = chirps.id AND replies.type = "reply") AS reply_count,
+                   (SELECT COUNT(*) FROM likes WHERE chirp_id = chirps.id AND user_id = :viewer_id) AS liked_by_current_user,
+                   (SELECT COUNT(*) FROM rechirps WHERE chirp_id = chirps.id AND user_id = :viewer_id) AS rechirped_by_current_user,
+                   chirps.timestamp AS sort_ts
+            FROM chirps
+            INNER JOIN users ON chirps.user = users.id
+            WHERE chirps.type = "post" AND chirps.user = :profile_id
+
+            UNION ALL
+
+            SELECT chirps.*, users.username, users.name, users.profilePic, users.isVerified,
+                   (SELECT COUNT(*) FROM likes WHERE chirp_id = chirps.id) AS like_count,
+                   (SELECT COUNT(*) FROM rechirps WHERE chirp_id = chirps.id) AS rechirp_count,
+                   (SELECT COUNT(*) FROM chirps AS replies WHERE replies.parent = chirps.id AND replies.type = "reply") AS reply_count,
+                   (SELECT COUNT(*) FROM likes WHERE chirp_id = chirps.id AND user_id = :viewer_id) AS liked_by_current_user,
+                   (SELECT COUNT(*) FROM rechirps WHERE chirp_id = chirps.id AND user_id = :viewer_id) AS rechirped_by_current_user,
+                   rechirps.timestamp AS sort_ts
+            FROM chirps
+            INNER JOIN users ON chirps.user = users.id
+            INNER JOIN rechirps ON chirps.id = rechirps.chirp_id
+            WHERE chirps.type = "post" AND rechirps.user_id = :profile_id
+        ) AS combined
+        ORDER BY sort_ts DESC
         LIMIT :limit OFFSET :offset
     ';
 
     $stmt = $db->prepare($query);
-    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+    $viewerId = $currentUserId !== null ? $currentUserId : 0;
+    $stmt->bindValue(':viewer_id', $viewerId, PDO::PARAM_INT);
+    $stmt->bindValue(':profile_id', $user_id, PDO::PARAM_INT);
     $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
@@ -134,6 +154,9 @@ try {
         $row['reply_count'] = (int)$row['reply_count'];
         $row['liked_by_current_user'] = (bool)$row['liked_by_current_user'];
         $row['rechirped_by_current_user'] = (bool)$row['rechirped_by_current_user'];
+
+        // Remove internal sorting column
+        unset($row['sort_ts']);
 
         // Add to chirps array
         $chirps[] = $row;
