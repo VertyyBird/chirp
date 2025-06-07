@@ -6,15 +6,10 @@ try {
     echo 'Connection failed: ' . $e->getMessage();
 }
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-
-
     <link href="/src/styles/styles.css" rel="stylesheet">
     <link href="/src/styles/timeline.css" rel="stylesheet">
     <link href="/src/styles/menus.css" rel="stylesheet">
@@ -35,7 +30,6 @@ try {
     <link rel="manifest" href="/site.webmanifest">
     <title>Home - Chirp</title>
 </head>
-
 <body>
     <header>
         <div id="desktopMenu">
@@ -108,17 +102,12 @@ try {
                 <div id="cookieConsent">
                     <div>
                         <p>🍪 Here, have some cookies!</p>
-                        <p class="subText">Chirp uses cookies to improve your experience, to personalize content, and to
-                            keep you signed in.
-                            If you decline all cookies*, you can still use Chirp, but some features may not work as
-                            intended.
+                        <p class="subText">Chirp uses cookies to improve your experience, to personalize content, and to keep you signed in. If you decline all cookies*, you can still use Chirp, but some features may not work as intended.
                         </p>
                         <div>
                             <button class="button" type="button" onclick="acceptCookies()">Accept all cookies</button>
-                            <button class="button following" type="button" onclick="acceptCookies()">Accept only
-                                essential cookies</button>
-                            <button type="button" class="button cancel" onclick="declineCookies()">Decline all
-                                cookies*</button>
+                            <button class="button following" type="button" onclick="acceptCookies()">Accept only essential cookies</button>
+                            <button type="button" class="button cancel" onclick="declineCookies()">Decline all cookies*</button>
                         </div>
                     </div>
                 </div>
@@ -134,10 +123,8 @@ try {
             </div>
         </div>
     </main>
-
     <aside id="sideBar">
         <?php include 'include/sideBar.php'; ?>
-
     </aside>
     <footer>
         <div class="mobileCompose">
@@ -150,9 +137,7 @@ try {
             <a href="/discover"><img src="/src/images/icons/search.svg" alt="Discover"></a>
             <a href="/notifications"><img src="/src/images/icons/bell.svg" alt="Notifications"></a>
             <a href="/messages"><img src="/src/images/icons/envelope.svg" alt="Direct Messages"></a>
-            <a
-                href="<?php echo isset($_SESSION['username']) ? '/user?id=' . htmlspecialchars($_SESSION['username']) : '/signin'; ?>"><img
-                    src="/src/images/icons/person.svg" alt="Profile"></a>
+            <a href="<?php echo isset($_SESSION['username']) ? '/user?id=' . htmlspecialchars($_SESSION['username']) : '/signin'; ?>"><img src="/src/images/icons/person.svg" alt="Profile"></a>
         </div>
     </footer>
     <?php include 'include/compose.php'; ?>
@@ -162,17 +147,15 @@ try {
             <input type="text" id="username" placeholder="Email or username" required>
             <div class="modal-buttons">
                 <button class="button followButton" id="okButton" onClick="closeWannaTalkAboutItModal()">Next</button>
-                <a target="_blank" rel="nooepner noreferer" href="https://www.wannatalkaboutit.com/"
-                    class="followButton following">Forgot password?</a>              
+                <a target="_blank" rel="nooepner noreferer" href="https://www.wannatalkaboutit.com/" class="followButton following">Forgot password?</a>              
             </div>
             <div class="textButtons">
-                    <a class="noAccountInModal">Don't have an account? Sign up</a>
-                    <button onClick="closeWannaTalkAboutItModal()" class="noAccountInModal">Use Chirp as a guest instead</button>
-                    </div>
+                <a class="noAccountInModal">Don't have an account? Sign up</a>
+                <button onClick="closeWannaTalkAboutItModal()" class="noAccountInModal">Use Chirp as a guest instead</button>
+            </div>
         </div>
     </div>
     <script defer src="/src/scripts/loadChirps.js"></script>
-
 </body>
-
 </html>
+
